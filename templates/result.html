@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Результаты проверки погоды</h2>
+
+<h3>Начальная точка маршрута: {{ start }}</h3>
+<p>Температура: {{ weather_data.start.temperature }}°C</p>
+<p>Скорость ветра: {{ weather_data.start.wind_speed }} км/ч</p>
+<p>Вероятность осадков: {{ weather_data.start.precipitation_probability }}%</p>
+<p><strong>Погодные условия: {{ start_status }}</strong></p>
+
+<h3>Конечная точка маршрута: {{ end }}</h3>
+<p>Температура: {{ weather_data.end.temperature }}°C</p>
+<p>Скорость ветра: {{ weather_data.end.wind_speed }} км/ч</p>
+<p>Вероятность осадков: {{ weather_data.end.precipitation_probability }}%</p>
+<p><strong>Погодные условия: {{ end_status }}</strong></p>
+
+<a href="/">Вернуться назад</a>
+{% endblock %}

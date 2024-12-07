@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/check_route" method="POST">
+    <label for="start">Начальная точка маршрута:</label>
+    <input type="text" id="start" name="start" required>
+    <br>
+    <label for="end">Конечная точка маршрута:</label>
+    <input type="text" id="end" name="end" required>
+    <br>
+    <button type="submit">Проверить</button>
+</form>
+{% endblock %}
