@@ -1,6 +1,6 @@
 import requests
 
-API_KEY = "pgoSwlHSS8YfyTh6CJN3XhBSCWd6CmFq"
+API_KEY = "C5j86QLKuAXUt1L6QjCI6cXgZvy0QgNI"
 BASE_URL = "http://dataservice.accuweather.com"
 
 
@@ -60,3 +60,35 @@ def fetch_weather(start_city, end_city):
         "start": start_weather,
         "end": end_weather,
     }
+
+
+def fetch_weather_extended(city_names, days):
+    """
+    Получить прогноз погоды для нескольких городов на заданное количество дней.
+
+    :param city_names: Список городов.
+    :param days: Количество дней (1, 3 или 5).
+    :return: Словарь с данными о погоде.
+    """
+    forecasts = {}
+    for city in city_names:
+        location_key = get_location_key(city)
+        url = f"{BASE_URL}/forecasts/v1/daily/{days}day/{location_key}"
+        params = {"apikey": API_KEY, "details": "true", "metric": "true"}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        data = response.json()
+        print(data)
+        forecasts[city] = [
+            {
+                "date": forecast.get("Date"),
+                "temperature_max": forecast["Temperature"]["Maximum"].get("Value"),
+                "temperature_min": forecast["Temperature"]["Minimum"].get("Value"),
+                "wind_speed": forecast["Day"]["Wind"]["Speed"].get("Value", 0),  # Данные о ветре
+                "precipitation_probability": forecast["Day"].get("PrecipitationProbability", 0)  # Вероятность осадков
+            }
+            for forecast in data.get("DailyForecasts", [])
+        ]
+    return forecasts
+
+

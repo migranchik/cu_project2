@@ -1,19 +1,24 @@
-{% extends "base.html" %}
+<h2>Результаты прогноза для маршрута</h2>
 
-{% block content %}
-<h2>Результаты проверки погоды</h2>
-
-<h3>Начальная точка маршрута: {{ start }}</h3>
-<p>Температура: {{ weather_data.start.temperature }}°C</p>
-<p>Скорость ветра: {{ weather_data.start.wind_speed }} км/ч</p>
-<p>Вероятность осадков: {{ weather_data.start.precipitation_probability }}%</p>
-<p><strong>Погодные условия: {{ start_status }}</strong></p>
-
-<h3>Конечная точка маршрута: {{ end }}</h3>
-<p>Температура: {{ weather_data.end.temperature }}°C</p>
-<p>Скорость ветра: {{ weather_data.end.wind_speed }} км/ч</p>
-<p>Вероятность осадков: {{ weather_data.end.precipitation_probability }}%</p>
-<p><strong>Погодные условия: {{ end_status }}</strong></p>
+{% for city, forecasts in weather_data.items() %}
+    <h3>{{ city }}</h3>
+    {% for forecast in forecasts %}
+        <p>Дата: {{ forecast['date'] }}</p>
+        <p>Максимальная температура: {{ forecast['temperature_max'] }}°C</p>
+        <p>Минимальная температура: {{ forecast['temperature_min'] }}°C</p>
+        <p>Скорость ветра: {{ forecast['wind_speed'] }} км/ч</p>
+        <p>Вероятность осадков: {{ forecast['precipitation_probability'] }}%</p>
+        <hr>
+    {% endfor %}
+{% endfor %}
 
 <a href="/">Вернуться назад</a>
-{% endblock %}
+
+<script>
+    fetch('/get_weather_data')
+        .then(response => response.json())
+        .then(data => {
+            const store = document.querySelector('#weather-data-store');
+            store.data = data;
+        });
+</script>

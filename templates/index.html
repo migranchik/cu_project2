@@ -1,13 +1,19 @@
-{% extends "base.html" %}
-
-{% block content %}
 <form action="/check_route" method="POST">
     <label for="start">Начальная точка маршрута:</label>
     <input type="text" id="start" name="start" required>
     <br>
+    <label for="stops">Промежуточные точки (через запятую):</label>
+    <input type="text" id="stops" name="stops">
+    <br>
     <label for="end">Конечная точка маршрута:</label>
     <input type="text" id="end" name="end" required>
     <br>
+    <label for="days">Прогноз на (дни):</label>
+    <select id="days" name="days">
+        <option value="1">1 день</option>
+        <option value="3">3 дня</option>
+        <option value="5">5 дней</option>
+    </select>
+    <br>
     <button type="submit">Проверить</button>
 </form>
-{% endblock %}
